@@ -17,6 +17,7 @@ class CreatePlatformsTable extends Migration
             $table->bigIncrements('id');
             $table->string('key');
             $table->string('name');
+            $table->string('icon');
             $table->text('description');
             $table->timestamps();
         });

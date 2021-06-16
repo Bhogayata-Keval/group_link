@@ -1,8 +1,5 @@
 <?php
 
-use App\Platform;
-use App\Tag;
-
 use Illuminate\Http\Request;
 
 /*
@@ -20,21 +17,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/platforms', function() {
-    return Platform::all();
-});
+Route::get('/platforms', 'Api\PlatformController@index');
+Route::post('/platforms', 'Api\PlatformController@create');
 
-Route::post('/platforms', function() {
-    return Platform::create([
-        'key' => request('key'),
-        'name' => request('name'),
-        'description' => request('description'),
-    ]);
-});
+Route::get('/tags', 'Api\TagController@index');
+Route::post('/tags', 'Api\TagController@create');
 
-Route::get('/tags', function() {
-    return Tag::all();
-});
+Route::get('/groups', 'Api\GroupController@index');
+Route::post('/groups', 'Api\GroupController@create');
+
 
 
 Route::post('/search', function() {
