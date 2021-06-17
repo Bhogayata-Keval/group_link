@@ -16,8 +16,8 @@ class CreateGroupsTable extends Migration
         Schema::create('groups', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->string('link');
-            $table->string('description');
+            $table->string('link')->unique();
+            $table->string('description')->nullable();
             $table->unsignedBigInteger('platform_id');
             $table->foreign('platform_id')->references('id')->on('platforms');
             $table->timestamps();

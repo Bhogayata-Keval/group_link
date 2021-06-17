@@ -16,9 +16,9 @@ class CreatePlatformsTable extends Migration
         Schema::create('platforms', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('key');
-            $table->string('name');
-            $table->string('icon');
-            $table->text('description');
+            $table->string('name')->unique();
+            $table->string('icon')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
