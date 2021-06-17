@@ -13,7 +13,7 @@ class CreateGroupsTagsTable extends Migration
      */
     public function up()
     {
-        Schema::create('groups_tags', function (Blueprint $table) {
+        Schema::create('group_tag', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('group_id');
             $table->foreign('group_id')->references('id')->on('groups');
@@ -30,6 +30,6 @@ class CreateGroupsTagsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('groups_tags');
+        Schema::dropIfExists('group_tag');
     }
 }
