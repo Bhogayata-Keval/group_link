@@ -36,6 +36,6 @@ class Platform extends Model
      */
     public function groups()
     {
-        return $this->hasMany('App\Group');
+        return $this->hasMany('App\Models\Group');
     }
 }

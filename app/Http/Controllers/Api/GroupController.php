@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Models\Group;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\GroupResource;
 use App\Models\Tag;
+use Illuminate\Support\Facades\DB;
 
 class GroupController extends Controller
 {
@@ -13,42 +15,49 @@ class GroupController extends Controller
     public function index(Request $request)
     {
         $limit = isset($request->limit) ? $request->limit : 10;
-        $result = Group::paginate($limit);
-        return response()->json($result, 200);
+        return GroupResource::collection(Group::paginate($limit));
     }
 
     public function create(Request $request)
     {
-        // 'link' => 'required|url|unique:groups,link',
         $request->validate([
             'name' => 'required',
-            'link' => 'required|url',
-            'description' => 'required',
+            'link' => 'required|url|unique:groups,link',
+            'description' => 'string|nullable',
             'platform_id' => 'required|exists:platforms,id',
             'tags' => 'array|min:1'
         ]);
 
-        $group = Group::create([
-            'key' => request('key'),
-            'name' => request('name'),
-            'link' => request('link'),
-            'platform_id' => request('platform_id'),
-            'description' => request('description'),
-        ]);
+        try {
+            DB::beginTransaction();
+            $group = Group::create([
+                'key' => request('key'),
+                'name' => request('name'),
+                'link' => request('link'),
+                'platform_id' => request('platform_id'),
+                'description' => request('description'),
+            ]);
 
-        if ($request->has('tags')) {
-            foreach (request('tags') as $tag) {
-                $firstOrCreatedTag = Tag::firstOrCreate(
-                    [
-                        'name' => $tag['name'],
-                        'description' => $tag['name']
-                    ]
-                );
-                $firstOrCreatedTag->groups()->attach($group->id);
+            if ($request->has('tags')) {
+                foreach (request('tags') as $tag) {
+                    $firstOrNewTag = Tag::firstOrNew(
+                        [
+                            'name' => $tag['name']
+                        ]
+                    );
+                    if(isset($tag['description'])){
+                        $firstOrNewTag->description = $tag['description'];
+                    }
+                    $firstOrNewTag->save();
+                    $firstOrNewTag->groups()->attach($group->id);
+                }
             }
-        }
 
-        $message = array('message' => 'Group Added Successfully');
-        return response()->json($message);
+            DB::commit();
+            return new GroupResource($group);
+        } catch (\Throwable $th) {
+            DB::rollback();
+            throw $th;
+        }
     }
 }

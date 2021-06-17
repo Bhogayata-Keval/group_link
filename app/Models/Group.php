@@ -35,7 +35,7 @@ class Group extends Model
      */
     public function platform()
     {
-        return $this->belongsTo('App\Models\Group');
+        return $this->belongsTo(Platform::class);
     }
 
     /**
@@ -44,6 +44,6 @@ class Group extends Model
     // TODO: this looks doubtful need to re-check once, maybe belongsToMany tags will come 
     public function tags()
     {
-        return $this->belongsToMany('App\Models\Tag', 'groups_tags');
+        return $this->belongsToMany(Tag::class, 'groups_tags');
     }
 }

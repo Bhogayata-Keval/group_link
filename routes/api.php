@@ -25,6 +25,7 @@ Route::post('/tags', 'Api\TagController@create');
 
 Route::get('/groups', 'Api\GroupController@index');
 Route::post('/groups', 'Api\GroupController@create');
+Route::post('/groups/submit-group', 'Api\GroupController@create');
 
 
 

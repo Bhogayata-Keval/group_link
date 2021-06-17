@@ -20,6 +20,7 @@ class CreateGroupsTable extends Migration
             $table->string('description')->nullable();
             $table->unsignedBigInteger('platform_id');
             $table->foreign('platform_id')->references('id')->on('platforms');
+            $table->enum('status', ['pending', 'in-review', 'active'])->default('pending');	
             $table->timestamps();
         });
     }
