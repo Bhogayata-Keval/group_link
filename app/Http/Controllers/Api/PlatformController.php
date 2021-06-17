@@ -37,7 +37,6 @@ class PlatformController extends Controller
             $file->move(public_path() . '/images/', $icon_name);
             $data['icon'] = $icon_name;
         }
-
         $platform = Platform::create($data);
         return new PlatformResource($platform);
     }

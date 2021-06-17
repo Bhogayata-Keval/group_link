@@ -15,7 +15,9 @@ class JsonMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $request->headers->set("Accept", "application/json");
+        if(!$request->hasFile('icon') && !$request->hasFile('image') && !$request->hasFile('images') && !$request->hasFile('file') && !$request->hasFile('icons')){
+            $request->headers->set("Accept", "application/json");
+        }
         return $next($request);
     }
 }
