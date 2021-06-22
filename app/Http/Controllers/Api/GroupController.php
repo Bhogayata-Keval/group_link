@@ -15,7 +15,19 @@ class GroupController extends Controller
     public function index(Request $request)
     {
         $limit = isset($request->limit) ? $request->limit : 10;
-        return GroupResource::collection(Group::paginate($limit));
+        return GroupResource::collection(
+            Group::whereHas('platform', function ($query) use ($request) {
+                if (isset($request->platform)) {
+                    $query->where('name', $request->platform);
+                }
+            })
+            ->whereHas('tags', function ($query) use ($request) {
+                if (isset($request->tags) && $request->tags !== '') {
+                    $query->whereIn('name', explode(",", $request->tags));
+                }
+            })
+            ->paginate($limit)
+        );
     }
 
     public function create(Request $request)
@@ -45,7 +57,7 @@ class GroupController extends Controller
                             'name' => $tag['name']
                         ]
                     );
-                    if(isset($tag['description'])){
+                    if (isset($tag['description'])) {
                         $firstOrNewTag->description = $tag['description'];
                     }
                     $firstOrNewTag->save();

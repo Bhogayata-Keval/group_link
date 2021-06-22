@@ -19,7 +19,7 @@ class PlatformResource extends JsonResource
             'id'=> $this->id,
             'name'=> $this->name,
             "key" => $this->key,
-            "icon"=> public_path() . '\\images\\' . $this->icon,
+            "icon"=> asset('images/' . $this->icon),
             "description" => $this->description,
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at,

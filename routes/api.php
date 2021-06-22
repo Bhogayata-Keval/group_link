@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,10 +13,6 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::get('/platforms', 'Api\PlatformController@index');
 Route::post('/platforms', 'Api\PlatformController@create');
 
@@ -26,13 +22,3 @@ Route::post('/tags', 'Api\TagController@create');
 Route::get('/groups', 'Api\GroupController@index');
 Route::post('/groups', 'Api\GroupController@create');
 Route::post('/groups/submit-group', 'Api\GroupController@create');
-
-
-
-Route::post('/search', function() {
-    return Group::where([
-        'platform' => request('platform'),
-        'tag' => request('tag'),
-        'name' => request('name'),
-    ]);
-});

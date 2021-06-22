@@ -41,9 +41,8 @@ class Group extends Model
     /**
      * Get the tags for the group.
      */
-    // TODO: this looks doubtful need to re-check once, maybe belongsToMany tags will come 
     public function tags()
     {
-        return $this->belongsToMany(Tag::class, 'group_tag');
+        return $this->belongsToMany(Tag::class);
     }
 }

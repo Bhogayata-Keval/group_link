@@ -19,7 +19,7 @@ class GroupResource extends JsonResource
             'id'=> $this->id,
             'name'=> $this->name,
             'link' => $this->link,
-            'platform' => $this->platform,
+            'platform' =>  new PlatformResource($this->platform),
             'tags' => $this->tags,
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at,
