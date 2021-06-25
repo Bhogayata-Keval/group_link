@@ -18,7 +18,7 @@ class TagResource extends JsonResource
         return [
             'id'=> $this->id,
             'name'=> $this->name,
-            'totalCount' => count($this->groups),
+            'totalCount' => $this->groups_count,
             "description" => $this->description,
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at,

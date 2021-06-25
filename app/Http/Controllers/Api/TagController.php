@@ -13,7 +13,8 @@ class TagController extends Controller
     public function index(Request $request)
     {
         $limit = isset($request->limit) ? $request->limit : 10;
-        return TagResource::collection(Tag::paginate($limit));
+        $collection = TagResource::collection(Tag::withCount('groups')->orderBy('groups_count', 'desc')->paginate($limit));
+        return $collection;
     }
 
     public function create(Request $request)
