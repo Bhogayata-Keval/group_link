@@ -11,22 +11,25 @@ use Illuminate\Support\Facades\DB;
 
 class GroupController extends Controller
 {
-    //
     public function index(Request $request)
     {
         $limit = isset($request->limit) ? $request->limit : 10;
+        $q = Group::query();
+        if (isset($request->search) && $request->search != '' && $request->search != null && $request->search != 'null' && $request->search != 'NULL') {
+            $q->where('name', 'like', "%{$request->search}%");
+        }
+        if (isset($request->platform)) {
+            $q->whereHas('platform', function ($query) use ($request) {
+                $query->where('name', $request->platform);
+            });
+        }
+        if (isset($request->tags) && $request->tags !== '') {
+            $q->whereHas('tags', function ($query) use ($request) {
+                $query->whereIn('name', explode(",", $request->tags));
+            });
+        }
         return GroupResource::collection(
-            Group::whereHas('platform', function ($query) use ($request) {
-                if (isset($request->platform)) {
-                    $query->where('name', $request->platform);
-                }
-            })
-            ->whereHas('tags', function ($query) use ($request) {
-                if (isset($request->tags) && $request->tags !== '') {
-                    $query->whereIn('name', explode(",", $request->tags));
-                }
-            })
-            ->paginate($limit)
+            $q->paginate($limit)
         );
     }
 
