@@ -7,12 +7,16 @@ use App\Models\Group;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\GroupResource;
 use App\Models\Tag;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class GroupController extends Controller
 {
     public function index(Request $request)
     {
+        // TODO: Remove DEBUG
+        var_dump(Auth::user());
+        die();
         $limit = isset($request->limit) ? $request->limit : 10;
         $q = Group::query();
         if (isset($request->search) && $request->search != '' && $request->search != null && $request->search != 'null' && $request->search != 'NULL') {

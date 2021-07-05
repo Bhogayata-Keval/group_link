@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,3 +24,13 @@ Route::post('/tags', 'Api\TagController@create');
 Route::get('/groups', 'Api\GroupController@index');
 Route::post('/groups', 'Api\GroupController@create');
 Route::post('/groups/submit-group', 'Api\GroupController@create');
+
+Route::post('/login', 'Api\UserController@login');
+
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+Route::middleware(['auth', 'second'])->group(function () {
+    
+});
