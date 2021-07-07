@@ -1,12 +1,12 @@
 <?php
 
 namespace App\Http\Controllers\Api;
-use Socialite;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
+use Socialite;
 
 class UserController extends Controller
 {
