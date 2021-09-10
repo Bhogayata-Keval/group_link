@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -51,6 +52,7 @@ class UserController extends Controller
         $user = $this->createOrGetUser($request->token);
         FacadesAuth::login($user,true);
         $message = array('message' => 'Login Successfully');
+        $message['user'] = $user;
         $message['token'] =  $user->createToken('2obsKoWSyYBfFmwzvkiiuVnoUsyf9aG6')->accessToken; 
         return response()->json($message);
     }
